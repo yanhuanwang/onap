@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DmaapConsumerConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">datafile-dmaap-client</a> &gt; <a href="index.source.html" class="el_package">org.onap.dcaegen2.services.datafile.config</a> &gt; <span class="el_source">DmaapConsumerConfiguration.java</span></div><h1>DmaapConsumerConfiguration.java</h1><pre class="source lang-java linenums">/*-
+ * ============LICENSE_START=======================================================
+ * PNF-REGISTRATION-HANDLER
+ * ================================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+package org.onap.dcaegen2.services.datafile.config;
+
+import org.immutables.gson.Gson;
+import org.immutables.value.Value;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author &lt;a href=&quot;mailto:przemyslaw.wasala@nokia.com&quot;&gt;Przemysław Wąsala&lt;/a&gt; on 3/23/18
+ */
+@Component
+@Value.Immutable(prehash = true)
+@Value.Style(builder = &quot;new&quot;)
+@Gson.TypeAdapters
+<span class="fc" id="L33">public abstract class DmaapConsumerConfiguration implements DmaapCustomConfig {</span>
+
+    private static final long serialVersionUID = 1L;
+
+    @Value.Parameter
+    public abstract String consumerId();
+
+    @Value.Parameter
+    public abstract String consumerGroup();
+
+    @Value.Parameter
+    public abstract Integer timeoutMS();
+
+    @Value.Parameter
+    public abstract Integer messageLimit();
+
+
+    public interface Builder extends
+        DmaapCustomConfig.Builder&lt;DmaapConsumerConfiguration, DmaapConsumerConfiguration.Builder&gt; {
+
+        Builder consumerId(String consumerId);
+
+        Builder consumerGroup(String consumerGroup);
+
+        Builder timeoutMS(Integer timeoutMS);
+
+        Builder messageLimit(Integer messageLimit);
+    }
+
+    public static DmaapConsumerConfiguration.Builder builder() {
+<span class="nc" id="L63">        return ImmutableDmaapConsumerConfiguration.builder();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

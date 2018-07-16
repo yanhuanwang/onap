@@ -1,0 +1,3 @@
+org/onap/dcaegen2/services/datafile/service/AAIHttpClientImplTest.class
+org/onap/dcaegen2/services/datafile/service/AAIProducerClientTest.class
+org/onap/dcaegen2/services/datafile/service/AAIConsumerClientTest.class

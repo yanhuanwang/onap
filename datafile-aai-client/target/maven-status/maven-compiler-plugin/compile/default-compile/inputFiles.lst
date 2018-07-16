@@ -1,0 +1,6 @@
+/repo/ecaiyan/datafile/datafile-aai-client/src/main/java/org/onap/dcaegen2/services/datafile/service/AAIExtendedHttpClient.java
+/repo/ecaiyan/datafile/datafile-aai-client/src/main/java/org/onap/dcaegen2/services/datafile/config/AAIClientConfiguration.java
+/repo/ecaiyan/datafile/datafile-aai-client/src/main/java/org/onap/dcaegen2/services/datafile/service/AAIProducerClient.java
+/repo/ecaiyan/datafile/datafile-aai-client/src/main/java/org/onap/dcaegen2/services/datafile/service/AAIClient.java
+/repo/ecaiyan/datafile/datafile-aai-client/src/main/java/org/onap/dcaegen2/services/datafile/service/AAIConsumerClient.java
+/repo/ecaiyan/datafile/datafile-aai-client/src/main/java/org/onap/dcaegen2/services/datafile/service/AAIClientImpl.java

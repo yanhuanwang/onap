@@ -1,0 +1,4 @@
+org/onap/dcaegen2/services/datafile/service/config/DmaapConsumerConfigurationTest.class
+org/onap/dcaegen2/services/datafile/service/config/DmaapPublisherConfigurationTest.class
+org/onap/dcaegen2/services/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.class
+org/onap/dcaegen2/services/datafile/service/producer/ExtendedDmaapProducerHttpClientImplTest.class

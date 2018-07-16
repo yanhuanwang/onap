@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DmaapConsumerJsonParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">datafile-app-server</a> &gt; <a href="index.source.html" class="el_package">org.onap.dcaegen2.services.datafile.service</a> &gt; <span class="el_source">DmaapConsumerJsonParser.java</span></div><h1>DmaapConsumerJsonParser.java</h1><pre class="source lang-java linenums">/*
+ * ============LICENSE_START=======================================================
+ * PNF-REGISTRATION-HANDLER
+ * ================================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+package org.onap.dcaegen2.services.datafile.service;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
+import org.onap.dcaegen2.services.datafile.exceptions.DmaapNotFoundException;
+import org.onap.dcaegen2.services.datafile.model.ConsumerDmaapModel;
+import org.onap.dcaegen2.services.datafile.model.ImmutableConsumerDmaapModel;
+
+/**
+ * @author &lt;a href=&quot;mailto:przemyslaw.wasala@nokia.com&quot;&gt;Przemysław Wąsala&lt;/a&gt; on 5/8/18
+ */
+<span class="fc" id="L34">public class DmaapConsumerJsonParser {</span>
+
+    private static final String EVENT = &quot;event&quot;;
+    private static final String OTHER_FIELDS = &quot;otherFields&quot;;
+    private static final String PNF_OAM_IPV_4_ADDRESS = &quot;pnfOamIpv4Address&quot;;
+    private static final String PNF_OAM_IPV_6_ADDRESS = &quot;pnfOamIpv6Address&quot;;
+    private static final String PNF_VENDOR_NAME = &quot;pnfVendorName&quot;;
+    private static final String PNF_SERIAL_NUMBER = &quot;pnfSerialNumber&quot;;
+
+    public ConsumerDmaapModel getJsonObject(String message) throws DmaapNotFoundException {
+<span class="fc" id="L44">        JsonElement jsonElement = new JsonParser().parse(message);</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (jsonElement.isJsonObject()) {</span>
+<span class="nc" id="L46">            return create(jsonElement.getAsJsonObject());</span>
+        } else {
+<span class="fc" id="L48">            return create(StreamSupport.stream(jsonElement.getAsJsonArray().spliterator(), false).findFirst()</span>
+<span class="fc" id="L49">                .flatMap(this::getJsonObjectFromAnArray)</span>
+<span class="pc" id="L50">                .orElseThrow(() -&gt; new DmaapNotFoundException(&quot;Json object not found in json array&quot;)));</span>
+        }
+    }
+
+    public Optional&lt;JsonObject&gt; getJsonObjectFromAnArray(JsonElement element) {
+<span class="nc" id="L55">        return Optional.of(new JsonParser().parse(element.getAsString()).getAsJsonObject());</span>
+    }
+
+    private ConsumerDmaapModel create(JsonObject jsonObject) throws DmaapNotFoundException {
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (containsHeader(jsonObject)) {</span>
+<span class="fc" id="L60">            jsonObject = jsonObject.getAsJsonObject(EVENT).getAsJsonObject(OTHER_FIELDS);</span>
+<span class="fc" id="L61">            String pnfVendorName = getValueFromJson(jsonObject, PNF_VENDOR_NAME);</span>
+<span class="fc" id="L62">            String pnfSerialNumber = getValueFromJson(jsonObject, PNF_SERIAL_NUMBER);</span>
+<span class="fc" id="L63">            String pnfOamIpv4Address = getValueFromJson(jsonObject, PNF_OAM_IPV_4_ADDRESS);</span>
+<span class="fc" id="L64">            String pnfOamIpv6Address = getValueFromJson(jsonObject, PNF_OAM_IPV_6_ADDRESS);</span>
+<span class="fc bfc" id="L65" title="All 4 branches covered.">            if (isVendorAndSerialNotEmpty(pnfSerialNumber, pnfVendorName) &amp;&amp; isIpPropertiesNotEmpty(pnfOamIpv4Address,</span>
+                pnfOamIpv6Address)) {
+<span class="fc" id="L67">                String correlationID = pnfVendorName.substring(0, Math.min(pnfVendorName.length(), 3)).toUpperCase()</span>
+<span class="fc" id="L68">                    .concat(pnfSerialNumber);</span>
+<span class="fc" id="L69">                return ImmutableConsumerDmaapModel.builder().pnfName(correlationID).ipv4(pnfOamIpv4Address)</span>
+<span class="fc" id="L70">                    .ipv6(pnfOamIpv6Address).build();</span>
+            }
+<span class="fc" id="L72">            throw new DmaapNotFoundException(&quot;IPV4 and IPV6 are empty&quot;);</span>
+        }
+<span class="fc" id="L74">        throw new DmaapNotFoundException(&quot;Incorrect JsonObject - missing header&quot;);</span>
+    }
+
+    private String getValueFromJson(JsonObject jsonObject, String jsonKey) {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        return jsonObject.has(jsonKey) ? jsonObject.get(jsonKey).getAsString() : &quot;&quot;;</span>
+    }
+
+    private boolean isVendorAndSerialNotEmpty(String pnfSerialNumber, String pnfVendorName) {
+<span class="pc bpc" id="L82" title="2 of 6 branches missed.">        return ((pnfSerialNumber != null &amp;&amp; !pnfSerialNumber.isEmpty()) &amp;&amp; (pnfVendorName != null &amp;&amp; !pnfVendorName</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">            .isEmpty()));</span>
+    }
+
+    private boolean isIpPropertiesNotEmpty(String ipv4, String ipv6) {
+<span class="pc bpc" id="L87" title="2 of 6 branches missed.">        return (ipv4 != null &amp;&amp; !ipv4.isEmpty()) || (ipv6 != null</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            &amp;&amp; !ipv6.isEmpty());</span>
+    }
+
+    private boolean containsHeader(JsonObject jsonObject) {
+<span class="pc bpc" id="L92" title="1 of 4 branches missed.">        return jsonObject.has(EVENT) &amp;&amp; jsonObject.getAsJsonObject(EVENT).has(OTHER_FIELDS);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="6.11.2">
+<file name="/repo/ecaiyan/datafile/datafile-dmaap-client/src/test/java/org/onap/dcaegen2/services/datafile/service/consumer/ExtendedDmaapConsumerHttpClientImplTest.java">
+<error line="31" severity="warning" message="Wrong lexicographical order for &apos;java.io.IOException&apos; import. Should be before &apos;org.onap.dcaegen2.services.datafile.config.DmaapConsumerConfiguration&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="32" severity="warning" message="Wrong lexicographical order for &apos;java.lang.reflect.Field&apos; import. Should be before &apos;org.onap.dcaegen2.services.datafile.config.DmaapConsumerConfiguration&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="33" severity="warning" message="Wrong lexicographical order for &apos;java.util.Optional&apos; import. Should be before &apos;org.onap.dcaegen2.services.datafile.config.DmaapConsumerConfiguration&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="35" severity="warning" message="Import statement for &apos;org.mockito.ArgumentMatchers.any&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="36" severity="warning" message="Import statement for &apos;org.mockito.Mockito.mock&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="37" severity="warning" message="Import statement for &apos;org.mockito.Mockito.when&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="51" column="5" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+<error line="84" column="94" severity="warning" message="&apos;.&apos; should be on a new line." source="com.puppycrawl.tools.checkstyle.checks.whitespace.SeparatorWrapCheck"/>
+</file>
+<file name="/repo/ecaiyan/datafile/datafile-dmaap-client/src/test/java/org/onap/dcaegen2/services/datafile/service/producer/ExtendedDmaapProducerHttpClientImplTest.java">
+<error line="33" severity="warning" message="Wrong lexicographical order for &apos;java.io.IOException&apos; import. Should be before &apos;org.onap.dcaegen2.services.datafile.model.ConsumerDmaapModelForUnitTest&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="34" severity="warning" message="Wrong lexicographical order for &apos;java.lang.reflect.Field&apos; import. Should be before &apos;org.onap.dcaegen2.services.datafile.model.ConsumerDmaapModelForUnitTest&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="35" severity="warning" message="Wrong lexicographical order for &apos;java.util.Optional&apos; import. Should be before &apos;org.onap.dcaegen2.services.datafile.model.ConsumerDmaapModelForUnitTest&apos;." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="37" severity="warning" message="Import statement for &apos;org.mockito.ArgumentMatchers.any&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="38" severity="warning" message="Import statement for &apos;org.mockito.Mockito.mock&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="39" severity="warning" message="Import statement for &apos;org.mockito.Mockito.when&apos; is in the wrong order. Should be in the &apos;STATIC&apos; group, expecting not assigned imports on this line." source="com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck"/>
+<error line="52" column="5" severity="warning" message="Missing a Javadoc comment." source="com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck"/>
+</file>
+<file name="/repo/ecaiyan/datafile/datafile-dmaap-client/src/test/java/org/onap/dcaegen2/services/datafile/service/config/DmaapPublisherConfigurationTest.java">
+</file>
+<file name="/repo/ecaiyan/datafile/datafile-dmaap-client/src/test/java/org/onap/dcaegen2/services/datafile/service/config/DmaapConsumerConfigurationTest.java">
+</file>
+</checkstyle>

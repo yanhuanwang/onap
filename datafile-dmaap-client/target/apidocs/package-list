@@ -1,0 +1,5 @@
+org.onap.dcaegen2.services.datafile.config
+org.onap.dcaegen2.services.datafile.response
+org.onap.dcaegen2.services.datafile.service
+org.onap.dcaegen2.services.datafile.service.consumer
+org.onap.dcaegen2.services.datafile.service.producer

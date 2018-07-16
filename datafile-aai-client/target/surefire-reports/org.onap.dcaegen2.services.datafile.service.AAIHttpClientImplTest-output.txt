@@ -1,0 +1,2 @@
+00:08:10.138 [main] INFO org.onap.dcaegen2.services.datafile.service.AAIClientImpl - Setting SSL Context for AAI HTTP Client
+00:08:10.488 [main] INFO org.onap.dcaegen2.services.datafile.service.AAIClientImpl - Setting SSL Context for AAI HTTP Client

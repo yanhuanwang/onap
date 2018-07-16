@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DatafileAppConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">datafile-app-server</a> &gt; <a href="index.source.html" class="el_package">org.onap.dcaegen2.services.datafile.configuration</a> &gt; <span class="el_source">DatafileAppConfig.java</span></div><h1>DatafileAppConfig.java</h1><pre class="source lang-java linenums">/*
+ * ============LICENSE_START=======================================================
+ * PNF-REGISTRATION-HANDLER
+ * ================================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+package org.onap.dcaegen2.services.datafile.configuration;
+
+import com.google.gson.*;
+import org.onap.dcaegen2.services.datafile.config.AAIClientConfiguration;
+import org.onap.dcaegen2.services.datafile.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.datafile.config.DmaapPublisherConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.*;
+import java.util.ServiceLoader;
+
+/**
+ * @author &lt;a href=&quot;mailto:przemyslaw.wasala@nokia.com&quot;&gt;Przemysław Wąsala&lt;/a&gt; on 4/9/18
+ */
+@Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties(&quot;app&quot;)
+<span class="fc" id="L43">public abstract class DatafileAppConfig implements Config {</span>
+
+    private static final String CONFIG = &quot;configs&quot;;
+    private static final String AAI = &quot;aai&quot;;
+    private static final String DMAAP = &quot;dmaap&quot;;
+    private static final String AAI_CONFIG = &quot;aaiClientConfiguration&quot;;
+    private static final String DMAAP_PRODUCER = &quot;dmaapProducerConfiguration&quot;;
+    private static final String DMAAP_CONSUMER = &quot;dmaapConsumerConfiguration&quot;;
+
+<span class="fc" id="L52">    private static final Logger logger = LoggerFactory.getLogger(DatafileAppConfig.class);</span>
+
+    AAIClientConfiguration aaiClientConfiguration;
+
+    DmaapConsumerConfiguration dmaapConsumerConfiguration;
+
+    DmaapPublisherConfiguration dmaapPublisherConfiguration;
+
+    @NotEmpty
+    private String filepath;
+
+
+    @Override
+    public DmaapConsumerConfiguration getDmaapConsumerConfiguration() {
+<span class="fc" id="L66">        return dmaapConsumerConfiguration;</span>
+    }
+
+    @Override
+    public AAIClientConfiguration getAAIClientConfiguration() {
+<span class="fc" id="L71">        return aaiClientConfiguration;</span>
+    }
+
+    @Override
+    public DmaapPublisherConfiguration getDmaapPublisherConfiguration() {
+<span class="fc" id="L76">        return dmaapPublisherConfiguration;</span>
+    }
+
+    @Override
+    public void initFileStreamReader() {
+
+<span class="fc" id="L82">        GsonBuilder gsonBuilder = new GsonBuilder();</span>
+<span class="fc" id="L83">        ServiceLoader.load(TypeAdapterFactory.class).forEach(gsonBuilder::registerTypeAdapterFactory);</span>
+<span class="fc" id="L84">        JsonParser parser = new JsonParser();</span>
+        JsonObject jsonObject;
+<span class="fc" id="L86">        try (InputStream inputStream = getInputStream(filepath)) {</span>
+<span class="fc" id="L87">            JsonElement rootElement = getJsonElement(parser, inputStream);</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            if (rootElement.isJsonObject()) {</span>
+<span class="fc" id="L89">                jsonObject = rootElement.getAsJsonObject();</span>
+<span class="fc" id="L90">                aaiClientConfiguration = deserializeType(gsonBuilder,</span>
+<span class="fc" id="L91">                    jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(AAI).getAsJsonObject(AAI_CONFIG),</span>
+                    AAIClientConfiguration.class);
+
+<span class="fc" id="L94">                dmaapConsumerConfiguration = deserializeType(gsonBuilder,</span>
+<span class="fc" id="L95">                    jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_CONSUMER),</span>
+                    DmaapConsumerConfiguration.class);
+
+<span class="fc" id="L98">                dmaapPublisherConfiguration = deserializeType(gsonBuilder,</span>
+<span class="fc" id="L99">                    jsonObject.getAsJsonObject(CONFIG).getAsJsonObject(DMAAP).getAsJsonObject(DMAAP_PRODUCER),</span>
+                    DmaapPublisherConfiguration.class);
+            }
+<span class="pc bpc" id="L102" title="4 of 8 branches missed.">        } catch (IOException e) {</span>
+<span class="fc" id="L103">            logger.warn(&quot;Problem with file loading, file: {}&quot;, filepath, e);</span>
+<span class="fc" id="L104">        } catch (JsonSyntaxException e) {</span>
+<span class="fc" id="L105">            logger.warn(&quot;Problem with Json deserialization&quot;, e);</span>
+<span class="fc" id="L106">        }</span>
+<span class="fc" id="L107">    }</span>
+
+    JsonElement getJsonElement(JsonParser parser, InputStream inputStream) {
+<span class="fc" id="L110">        return parser.parse(new InputStreamReader(inputStream));</span>
+    }
+
+    private &lt;T&gt; T deserializeType(@NotNull GsonBuilder gsonBuilder, @NotNull JsonObject jsonObject,
+        @NotNull Class&lt;T&gt; type) {
+<span class="fc" id="L115">        return gsonBuilder.create().fromJson(jsonObject, type);</span>
+    }
+
+    InputStream getInputStream(@NotNull String filepath) throws IOException {
+<span class="nc" id="L119">        return new BufferedInputStream(new FileInputStream(filepath));</span>
+    }
+
+    String getFilepath() {
+<span class="fc" id="L123">        return this.filepath;</span>
+    }
+
+    public void setFilepath(String filepath) {
+<span class="fc" id="L127">        this.filepath = filepath;</span>
+<span class="fc" id="L128">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

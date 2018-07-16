@@ -1,0 +1,3 @@
+11:43:39.078 [main] INFO org.onap.dcaegen2.services.datafile.model.CommonFunctions - Status code of operation: 200
+11:43:39.101 [main] INFO org.onap.dcaegen2.services.datafile.model.CommonFunctions - Status code of operation: 400
+11:43:39.107 [main] WARN org.onap.dcaegen2.services.datafile.model.CommonFunctions - HTTP response not successful : null

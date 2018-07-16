@@ -1,0 +1,13 @@
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/AAIPublisherTaskSpy.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/AAIConsumerTaskImplTest.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/ScheduleControllerSpy.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/DmaapPublisherTaskImplTest.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/service/DmaapConsumerJsonParserTest.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/configuration/PrhAppConfigTest.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/AAIProducerTaskImplTest.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/AAIConsumerTaskSpy.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/DmaapConsumerTaskImplTest.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/DmaapProducerTaskSpy.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/tasks/DmaapConsumerTaskSpy.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/IT/junit5/mockito/MockitoExtension.java
+/repo/ecaiyan/datafile/datafile-app-server/src/test/java/org/onap/dcaegen2/services/datafile/IT/ScheduledXmlContextITest.java

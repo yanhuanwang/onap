@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExtendedDmaapConsumerHttpClientImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">datafile-dmaap-client</a> &gt; <a href="index.source.html" class="el_package">org.onap.dcaegen2.services.datafile.service.consumer</a> &gt; <span class="el_source">ExtendedDmaapConsumerHttpClientImpl.java</span></div><h1>ExtendedDmaapConsumerHttpClientImpl.java</h1><pre class="source lang-java linenums">/*-
+ * ============LICENSE_START=======================================================
+ * PNF-REGISTRATION-HANDLER
+ * ================================================================================
+ * Copyright (C) 2018 NOKIA Intellectual Property. All rights reserved.
+ * ================================================================================
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============LICENSE_END=========================================================
+ */
+
+package org.onap.dcaegen2.services.datafile.service.consumer;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.onap.dcaegen2.services.datafile.config.DmaapConsumerConfiguration;
+import org.onap.dcaegen2.services.datafile.service.DmaapHttpClientImpl;
+import org.onap.dcaegen2.services.datafile.service.HttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+public class ExtendedDmaapConsumerHttpClientImpl {
+
+<span class="fc" id="L43">    private static Logger logger = LoggerFactory.getLogger(ExtendedDmaapConsumerHttpClientImpl.class);</span>
+
+    private final CloseableHttpClient closeableHttpClient;
+    private final String dmaapHostName;
+    private final String dmaapProtocol;
+    private final Integer dmaapPortNumber;
+    private final String dmaapTopicName;
+    private final String consumerGroup;
+    private final String consumerId;
+    private final String dmaapContentType;
+
+
+<span class="fc" id="L55">    public ExtendedDmaapConsumerHttpClientImpl(DmaapConsumerConfiguration configuration) {</span>
+<span class="fc" id="L56">        this.closeableHttpClient = new DmaapHttpClientImpl(configuration).getHttpClient();</span>
+<span class="fc" id="L57">        this.dmaapHostName = configuration.dmaapHostName();</span>
+<span class="fc" id="L58">        this.dmaapProtocol = configuration.dmaapProtocol();</span>
+<span class="fc" id="L59">        this.dmaapPortNumber = configuration.dmaapPortNumber();</span>
+<span class="fc" id="L60">        this.dmaapTopicName = configuration.dmaapTopicName();</span>
+<span class="fc" id="L61">        this.consumerGroup = configuration.consumerGroup();</span>
+<span class="fc" id="L62">        this.consumerId = configuration.consumerId();</span>
+<span class="fc" id="L63">        this.dmaapContentType = configuration.dmaapContentType();</span>
+<span class="fc" id="L64">    }</span>
+
+    public Optional&lt;String&gt; getHttpConsumerResponse() {
+
+        try {
+<span class="fc" id="L69">            return createRequest()</span>
+<span class="fc" id="L70">                .flatMap(this::executeHttpClient);</span>
+<span class="nc" id="L71">        } catch (URISyntaxException e) {</span>
+<span class="nc" id="L72">            logger.warn(&quot;Exception while executing HTTP request: &quot;, e);</span>
+        }
+<span class="nc" id="L74">        return Optional.empty();</span>
+    }
+
+    private Optional&lt;String&gt; executeHttpClient(HttpRequestBase httpRequestBase) {
+        try {
+<span class="fc" id="L79">            return closeableHttpClient.execute(httpRequestBase, getDmaapConsumerResponseHandler());</span>
+<span class="nc" id="L80">        } catch (IOException e) {</span>
+<span class="nc" id="L81">            logger.warn(&quot;Exception while executing HTTP request: &quot;, e);</span>
+        }
+<span class="nc" id="L83">        return Optional.empty();</span>
+    }
+
+    private Optional&lt;HttpRequestBase&gt; createRequest() throws URISyntaxException {
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        return &quot;application/json&quot;.equals(dmaapContentType)</span>
+<span class="fc" id="L88">            ? createDmaapConsumerExtendedURI().map(this::createHttpRequest)</span>
+<span class="nc" id="L89">            : Optional.empty();</span>
+    }
+
+    private HttpRequestBase createHttpRequest(URI extendedURI) {
+<span class="fc" id="L93">        HttpRequestBase httpRequestBase = new HttpGet(extendedURI);</span>
+<span class="fc" id="L94">        httpRequestBase.addHeader(&quot;Content-type&quot;, dmaapContentType);</span>
+<span class="fc" id="L95">        return httpRequestBase;</span>
+    }
+
+
+    private String createRequestPath() {
+<span class="fc" id="L100">        return dmaapTopicName + &quot;/&quot; + consumerGroup + &quot;/&quot; + consumerId;</span>
+    }
+
+    private Optional&lt;URI&gt; createDmaapConsumerExtendedURI() throws URISyntaxException {
+<span class="fc" id="L104">        return Optional.ofNullable(new URIBuilder()</span>
+<span class="fc" id="L105">            .setScheme(dmaapProtocol)</span>
+<span class="fc" id="L106">            .setHost(dmaapHostName)</span>
+<span class="fc" id="L107">            .setPort(dmaapPortNumber)</span>
+<span class="fc" id="L108">            .setPath(createRequestPath()).build());</span>
+    }
+
+    private ResponseHandler&lt;Optional&lt;String&gt;&gt; getDmaapConsumerResponseHandler() {
+<span class="fc" id="L112">        return httpResponse -&gt; {</span>
+<span class="nc" id="L113">            final int responseCode = httpResponse.getStatusLine().getStatusCode();</span>
+<span class="nc" id="L114">            logger.info(&quot;Status code of operation: {}&quot;, responseCode);</span>
+<span class="nc" id="L115">            final HttpEntity responseEntity = httpResponse.getEntity();</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            if (HttpUtils.isSuccessfulResponseCode(responseCode)) {</span>
+<span class="nc" id="L118">                logger.trace(&quot;HTTP response successful.&quot;);</span>
+<span class="nc" id="L119">                final String dmaapResponse = EntityUtils.toString(responseEntity);</span>
+<span class="nc" id="L120">                return Optional.of(dmaapResponse);</span>
+            } else {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                String dmaapResponse = responseEntity != null ? EntityUtils.toString(responseEntity) : &quot;&quot;;</span>
+<span class="nc" id="L123">                logger.trace(&quot;HTTP response not successful : {}&quot;, dmaapResponse);</span>
+<span class="nc" id="L124">                return Optional.of(String.valueOf(responseCode));</span>
+            }
+        };
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

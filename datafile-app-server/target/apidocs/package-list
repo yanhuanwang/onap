@@ -1,0 +1,6 @@
+org.onap.dcaegen2.services.datafile
+org.onap.dcaegen2.services.datafile.configuration
+org.onap.dcaegen2.services.datafile.controllers
+org.onap.dcaegen2.services.datafile.exceptions
+org.onap.dcaegen2.services.datafile.service
+org.onap.dcaegen2.services.datafile.tasks
