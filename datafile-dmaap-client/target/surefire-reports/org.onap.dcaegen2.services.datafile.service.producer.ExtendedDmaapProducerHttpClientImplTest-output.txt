@@ -1,1 +1,0 @@
-00:08:35.325 [main] INFO org.onap.dcaegen2.services.datafile.service.DmaapHttpClientImpl - Preparing closeable http client

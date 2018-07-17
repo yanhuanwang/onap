@@ -1,6 +1,0 @@
-2018-07-17 00:09:20.726  WARN   --- [           main] o.o.d.s.d.tasks.AAIProducerTaskImpl      : Patch request not successful
-
-java.net.URISyntaxException: null at index 0: null
-
-2018-07-17 00:09:20,726 - WARN  [main:o.o.d.s.d.t.AAIProducerTaskImpl@62] - Patch request not successful
-java.net.URISyntaxException: null at index 0: null

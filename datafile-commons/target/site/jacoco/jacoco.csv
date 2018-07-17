@@ -1,3 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-datafile-commons,org.onap.dcaegen2.services.datafile.model,CommonFunctions,4,47,1,3,1,12,2,4,1,3
-datafile-commons,org.onap.dcaegen2.services.datafile.model.utils,HttpUtils,3,12,1,3,1,1,2,2,1,1
